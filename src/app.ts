@@ -1,5 +1,8 @@
 import express, { urlencoded, type Request, type Response } from "express"
-import { authRouter } from "./modules/auth.routes";
+import { authRouter } from "./modules/auth/auth.routes";
+import { issueRouter } from "./modules/issue/issue.routes";
+import globalErrorHandler from "./middleware/globalErrorhandler";
+
 const app = express()
 
 app.use(express.json());
@@ -11,6 +14,10 @@ app.get('/', (req:Request, res:Response) => {
 })
 
 app.use('/api/auth',authRouter)
+app.use("/api/issues",issueRouter)
+
+
+app.use(globalErrorHandler)
 
 
 export default app;
