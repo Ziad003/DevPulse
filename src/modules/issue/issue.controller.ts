@@ -42,6 +42,35 @@ const createIssue = async (req: Request, res: Response) => {
   }
 };
 
+const getAllIssues=async (req: Request, res: Response) => {
+  
+  try {
+    const reqQuery={
+      sort:(req.query.sort as string)||null,
+      type:(req.query.type as string)||null,
+      status:(req.query.status as string)||null
+    }
+
+    const result=await issueService.getAllIssuesFromDB(reqQuery);
+    globalResponseHandler(res,{
+      statusCode:200,
+      success:true,
+      message:"Issues retrived successfully",
+      data:result
+    })
+    
+  } catch (error: any) {
+    globalResponseHandler(res, {
+      statusCode: 500,
+      success: false,
+      message: error.message,
+      error: error,
+    })
+  }
+}
+
+
 export const issueController = {
   createIssue,
+  getAllIssues,
 };

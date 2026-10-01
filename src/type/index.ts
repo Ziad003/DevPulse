@@ -25,3 +25,5 @@ export const UserRoles={
 export const allowedRoles=["contributor","maintainer"] as const
 export type ROLES="contributor" | "maintainer";
 export const allowedTypes = ["bug", "feature_request"] as const;
+
+export const TYPE=["bug","feature_request"] as const;
