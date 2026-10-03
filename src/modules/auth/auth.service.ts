@@ -41,7 +41,7 @@ const loginUserIntoDB = async (payLoad: ILoginUser) => {
     [email],
   );
 
-  if (getUsers.rows[0].length == 0) {
+  if (getUsers.rows.length == 0) {
     throw new Error("User not found");
   }
   const user = getUsers.rows[0];

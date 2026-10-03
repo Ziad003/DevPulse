@@ -17,7 +17,7 @@ const auth = (...roles: ROLES[]) => {
       const token = req.headers.authorization;
       console.log(token);
       if (!token) {
-        res
+        return res
           .status(401)
           .json({ success: false, message: "Unauthorized access!!" });
       }
@@ -40,13 +40,13 @@ const auth = (...roles: ROLES[]) => {
 
       //validation with logic
       if (userData.rows.length === 0) {
-        res.status(403).json({ success: false, message: "User not found!!" });
+        return res.status(403).json({ success: false, message: "User not found!!" });
       }
 
       // console.log("Auth Role: ",user.role)
 
       if (roles.length && !roles.includes(user.role)) {
-        globalResponseHandler(res,{
+        return globalResponseHandler(res,{
           statusCode:403,
           success:false,
           message:"Access denied. You do not have the required role to perform this action."

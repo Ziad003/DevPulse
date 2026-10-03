@@ -5,7 +5,7 @@ import { allowedTypes } from "../../type";
 
 const createIssue = async (req: Request, res: Response) => {
   try {
-    const repId = req.user?.id;
+    const reqId = req.user?.id;
 
     const { type, description } = req.body;
     if (type && !allowedTypes.includes(type)) {
@@ -24,7 +24,7 @@ const createIssue = async (req: Request, res: Response) => {
       });
     }
 
-    const result = await issueService.createIssueIntoDB(req.body, repId);
+    const result = await issueService.createIssueIntoDB(req.body, reqId);
 
     globalResponseHandler(res, {
       statusCode: 201,
@@ -67,10 +67,58 @@ const getAllIssues=async (req: Request, res: Response) => {
       error: error,
     })
   }
-}
+};
+
+const getIssueById=async(req:Request,res:Response)=>{
+    try {
+        const issueId=req.params.id;
+        const result=await issueService.getIssueByIdFromDB(issueId as string);
+        globalResponseHandler(res, {
+            statusCode: 200,
+            success: true,
+            message: "Issue retrieved successfully",
+            data: result
+        });
+    } catch (error:any) {
+      globalResponseHandler(res, {
+        statusCode: 500,
+        success: false,
+        message: error.message,
+        error: error,
+      })
+    }
+  };
+
+  const updateIssueById=async(req:Request,res:Response)=>{
+    try {
+      const issueId=req.params.id;
+      const payLoad=req.body;
+
+      const result=await issueService.updateIssueByIdInDB(req,issueId as string,payLoad);
+      globalResponseHandler(res, {
+        statusCode: 200,
+        success: true,
+        message: "Issue updated successfully",
+        data: result
+      })
+
+    } catch (error:any) {
+      globalResponseHandler(res, {
+        statusCode: error.statusCode || 500,
+        success: false,
+        message: error.message,
+        error: error,
+      })
+    }
+  };
+
+
+
 
 
 export const issueController = {
   createIssue,
   getAllIssues,
+  getIssueById,
+  updateIssueById
 };
