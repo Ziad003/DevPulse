@@ -98,8 +98,7 @@ const getIssueById=async(req:Request,res:Response)=>{
       globalResponseHandler(res, {
         statusCode: 200,
         success: true,
-        message: "Issue updated successfully",
-        data: result
+        message: "Issue updated successfully"
       })
 
     } catch (error:any) {
@@ -113,12 +112,31 @@ const getIssueById=async(req:Request,res:Response)=>{
   };
 
 
-
+const deleteIssueById=async(req:Request,res:Response)=>{
+  const id=req.params.id;
+  try {
+    const result=await issueService.deleteIssueByIdFromDB(id as string);
+    globalResponseHandler(res, {
+      statusCode: 200,
+      success: true,
+      message: "Issue deleted successfully",
+      data: result
+    });
+  } catch (error:any) {
+    globalResponseHandler(res, {
+      statusCode: error.statusCode || 500,
+      success: false,
+      message: error.message,
+      error: error,
+    })
+  }
+}
 
 
 export const issueController = {
   createIssue,
   getAllIssues,
   getIssueById,
-  updateIssueById
+  updateIssueById,
+  deleteIssueById
 };
